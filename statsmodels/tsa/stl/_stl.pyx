@@ -124,8 +124,10 @@ cdef class STL(object):
         Annual maps to 1, quarterly maps to 4, monthly to 12, weekly to 52.
         If endog is a ``ndarray``, ``period`` must be provided.
     seasonal : int, optional
-        Length of the seasonal smoother  (.. math:: n_{(s)} in [1]_). 
+        Length of the seasonal smoother  (.. math:: n_{(s)} in [1]_).
         Must be an odd integer, and should normally be ``>= 7`` (default).
+        As it increases, the values of the seasonal component at a
+        given point in the seasonal cycle become smoother.
     trend : {int, None}, optional
         Length of the trend smoother (.. math:: n_{(t)} in [1]_). 
         Must be an odd integer. If not provided
@@ -135,6 +137,8 @@ cdef class STL(object):
                 \frac{1.5 \cdot n_{(p)}}{1 - 1.5 \cdot n_{(s)}^{-1}}, 
         
         following the suggestion in the original implementation [1]_.
+        As it increases the values of the trend component become 
+        smoother.
     low_pass : {int, None}, optional
         The smoothing parameter of the low-pass filter. 
         (.. math:: n_{(l)} in [1]_)

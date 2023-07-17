@@ -94,10 +94,16 @@ def seasonal_decompose(
         The filter coefficients for filtering out the seasonal component.
         The concrete moving average method used in filtering is determined by
         two_sided.
-    period : int, optional
-        Period of the series. Must be used if x is not a pandas object or if
-        the index of x does not have  a frequency. Overrides default
-        periodicity of x if x is a pandas object with a timeseries index.
+    period : {int, None} optional
+        The number of obsertvations in each cycle of the seasonal component
+        For example, for a yearly seasonality, the ``period`` will be 
+        ``365`` for daily data and ``12`` for monthly data.
+        If ``None`` and ``x`` is a pandas ``Series`` or
+        ``DataFrame``, attempts to determine the periodicity from the pandas 
+        frequency. Overriding the default the periodicity of ``x``.
+        Annual maps to 1, quarterly maps to 4, monthly to 12, weekly to 52.
+        If ```x`` is a ``ndarray`` or if the index of ``x`` does not have
+        a frequency, ``period`` must be provided.
     two_sided : bool, optional
         The moving average method used in filtering.
         If True (default), a centered moving average is computed using the

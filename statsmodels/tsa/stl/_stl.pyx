@@ -114,20 +114,32 @@ cdef class STL(object):
     endog : array_like
         Data to be decomposed. Must be squeezable to 1-d.
     period : {int, None}, optional
-        Periodicity of the sequence. If None and endog is a pandas Series or
-        DataFrame, attempts to determine from endog. If endog is a ndarray,
-        period must be provided.
+        The number of obsertvations in each cycle of the seasonal component 
+        (.. math:: n_{(p)} in [1]_). 
+        For example, for a yearly seasonality, the ``period`` will be 
+        ``365`` for daily data and ``12`` for monthly data. 
+        If ``None`` and endog is a pandas ``Series`` or
+        ``DataFrame``, attempts to determine the periodicity from the pandas 
+        frequency.
+        Annual maps to 1, quarterly maps to 4, monthly to 12, weekly to 52.
+        If endog is a ``ndarray``, ``period`` must be provided.
     seasonal : int, optional
-        Length of the seasonal smoother. Must be an odd integer, and should
-        normally be >= 7 (default).
+        Length of the seasonal smoother  (.. math:: n_{(s)} in [1]_). 
+        Must be an odd integer, and should normally be ``>= 7`` (default).
     trend : {int, None}, optional
-        Length of the trend smoother. Must be an odd integer. If not provided
+        Length of the trend smoother (.. math:: n_{(t)} in [1]_). 
+        Must be an odd integer. If not provided
         uses the smallest odd integer greater than
-        1.5 * period / (1 - 1.5 / seasonal), following the suggestion in
-        the original implementation.
+        .. math:: 
+        
+                \frac{1.5 \cdot n_{(p)}}{1 - 1.5 \cdot n_{(s)}^{-1}}, 
+        
+        following the suggestion in the original implementation [1]_.
     low_pass : {int, None}, optional
-        Length of the low-pass filter. Must be an odd integer >=3. If not
-        provided, uses the smallest odd integer > period.
+        The smoothing parameter of the low-pass filter. 
+        (.. math:: n_{(l)} in [1]_)
+        Must be an odd integer ``>=3``.
+        If not provided, uses the smallest odd integer ``> period``.
     seasonal_deg : int, optional
         Degree of seasonal LOESS. 0 (constant) or 1 (constant and trend).
     trend_deg : int, optional
